@@ -66,7 +66,7 @@ export const Home = () => {
               
               <ListItem secondaryAction={
                 <IconButton aria-label="open" onClick={() => { window.open(d.file) }}>
-                  <StarBorderRoundedIcon />
+//                   <StarBorderRoundedIcon />
                   <OpenInNewIcon />
                 </IconButton>
               }>
