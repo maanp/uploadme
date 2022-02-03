@@ -15,8 +15,8 @@ export const Home = () => {
   const [value, setValue] = React.useState('one');
   const [docs, setDocs] = useState([]);
   const [loading, setLoading] = useState(false);
-  // let url = `https://uploadme.pythonanywhere.com`;
-  let url = 'http://localhost:8000'
+  let url = `https://uploadme.pythonanywhere.com`;
+//   let url = 'http://localhost:8000'
 
   let fetchData =async ()=>{
     console.log('setting loading to true:===>',loading);
