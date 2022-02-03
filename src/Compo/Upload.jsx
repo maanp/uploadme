@@ -29,8 +29,8 @@ export const Upload = () => {
     }, 500);
   }
   
-  // let url = `https://uploadme.pythonanywhere.com`;
-  let url = 'http://localhost:8000'
+  let url = `https://uploadme.pythonanywhere.com`;
+//   let url = 'http://localhost:8000'
 
 
 
