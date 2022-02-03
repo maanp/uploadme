@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Container from '@mui/material/Container';
-import { Paper, Typography, Box, Tabs, Tab, List, ListItem, ListItemIcon, ListItemText, IconButton, Avatar, ListItemAvatar } from '@mui/material';
+import { Paper, Typography, Box, Tabs, Tab, List, ListItem, ListItemIcon, ListItemText, IconButton, Avatar, ListItemAvatar, Stack } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import ImageIcon from '@mui/icons-material/Image';
@@ -10,6 +10,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Skeleton from '@mui/material/Skeleton';
 import { Spinner } from './Spinner';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
+import RefreshOutlinedIcon from '@mui/icons-material/RefreshOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 export const Home = () => {
   const [value, setValue] = React.useState('one');
@@ -64,17 +65,23 @@ export const Home = () => {
     <Container maxWidth='md'>
 
       <Box sx={{ width: '100%' }}>
+        <Stack direction='row'>
         <Tabs
           value={value}
           onChange={handleChange}
           textColor="secondary"
           indicatorColor="secondary"
           aria-label="secondary tabs example"
+          sx={{flexGrow:1}}
         >
           <Tab value="one" label="Your documents" />
           <Tab value="two" label="Favourite" />
           <Tab value="three" label="Account" />
         </Tabs>
+        <IconButton onClick={fetchData}>
+          <RefreshOutlinedIcon />
+        </IconButton>
+        </Stack>
       </Box>
       <List >
         
