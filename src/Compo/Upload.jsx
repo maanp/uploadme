@@ -16,7 +16,7 @@ export const Upload = () => {
   const [docs, setDocs] = useState([]);
   const [showloading, setShowloading] = useState(false);
   const [showalert, setShowalert] = useState(false);
-  const [progress, setProgress] = useState(50);
+  const [progress, setProgress] = useState(0);
   
 
   let setp = ()=>{
@@ -29,9 +29,12 @@ export const Upload = () => {
     }, 500);
   }
   
-  let url = `https://uploadme.pythonanywhere.com`;
+  // let url = `https://uploadme.pythonanywhere.com`;
+  let url = 'http://localhost:8000'
 
-  let handleSubmit = () => {
+
+
+  let handleSubmit =async () => {
     setShowloading(true)
     console.log(showloading);
     console.log('sending data');
@@ -44,7 +47,7 @@ export const Upload = () => {
     console.log(fd.get('file'), fd.get('name'));
 
     console.log(showloading);
-    fetch(`${url}/api/upload/`,
+    await fetch(`${url}/api/upload/`,
       {
         method: 'POST',
         body: fd
@@ -54,7 +57,9 @@ export const Upload = () => {
     setShowloading(false)
     console.log("Success");
     console.log(showloading);
-
+    setTimeout(() => {
+      setShowalert(false)
+    }, 1000);
   }
 
   const Alert = React.forwardRef(function Alert(props, ref) {
@@ -113,7 +118,7 @@ export const Upload = () => {
         </div>
       </Paper>
     </Container>
-    <Snackbar open={showalert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} onClose={() => setShowalert(false)} autoHideDuration={4000}
+    <Snackbar open={showalert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} onClose={() => setShowalert(false)} autoHideDuration={1000}
       action={
         <>
         <Button>Undo</Button>

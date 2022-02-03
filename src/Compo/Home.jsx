@@ -7,19 +7,31 @@ import ImageIcon from '@mui/icons-material/Image';
 import ArticleIcon from '@mui/icons-material/Article';
 import Divider from '@mui/material/Divider';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import Skeleton from '@mui/material/Skeleton';
-
+import { Spinner } from './Spinner';
+import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 export const Home = () => {
   const [value, setValue] = React.useState('one');
   const [docs, setDocs] = useState([]);
-  let url = `https://uploadme.pythonanywhere.com`;
+  const [loading, setLoading] = useState(false);
+  // let url = `https://uploadme.pythonanywhere.com`;
+  let url = 'http://localhost:8000'
+
+  let fetchData =async ()=>{
+    console.log('setting loading to true:===>',loading);
+    setLoading(true)
+    console.log(loading);
+    await fetch(`${url}/api/upload/`).then((d) => d.json()).then((d) => setDocs(d))
+    setLoading(false)
+    console.log(loading);
+  }
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   useEffect(() => {
-    fetch(`${url}/api/upload/`).then((d) => d.json()).then((d) => setDocs(d))
+      fetchData()
   }, []);
 
   let getIcon = (type) => {
@@ -41,6 +53,13 @@ export const Home = () => {
     return <FolderIcon />
   }
 
+  let handleDelete = (e) =>{
+    console.log(e.id)
+      fetch(`${url}/api/upload/${e.id}/`,{
+        method:'DELETE'
+      }).then((d)=>d.json()).then((d)=>console.log(d))
+  }
+
   return <div>
     <Container maxWidth='md'>
 
@@ -58,76 +77,40 @@ export const Home = () => {
         </Tabs>
       </Box>
       <List >
+        
+        
+
         {
-          
-           docs.length ? docs.map((d) => (
-            <div key={d.id}>
-              {/* <img src={d.file} alt="" /> */}
-              
-              <ListItem secondaryAction={
-                <IconButton aria-label="open" onClick={() => { window.open(d.file) }}>
-                  <StarBorderRoundedIcon />
-                  <OpenInNewIcon />
-                </IconButton>
-              }>
-                <ListItemAvatar >
-                  <Avatar>
-                    {getIcon(d.type)}
-                  </Avatar>
-                </ListItemAvatar>
-                {/* <ListItemIcon>
-                </ListItemIcon> */}
-                <ListItemText primary={<Typography >{d.name}.{d.type}</Typography>} secondary={(new Date(d.date_time)).toLocaleString()} />
-              </ListItem>
-              <Divider variant="inset" component="li" />
-
-            </div>
-          )) : 
-            <>
-              <ListItem secondaryAction={
-                <IconButton aria-label="open" onClick={() => { }}>
-                  <StarBorderRoundedIcon />
-                  <OpenInNewIcon />
-                </IconButton>
-              }>
-                <ListItemAvatar >
-                  <Avatar>
-                    <Skeleton variant="circular" width={40} height={40} />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={<Skeleton variant="text" animation='wave' width={80} />} secondary={<Skeleton variant="text" width={120} />} />
-              </ListItem>
-              <Divider variant="inset" component="li" />
-              <ListItem secondaryAction={
-                <IconButton aria-label="open" onClick={() => { }}>
-                  <StarBorderRoundedIcon />
-                  <OpenInNewIcon />
-                </IconButton>
-              }>
-                <ListItemAvatar >
-                  <Avatar>
-                    <Skeleton variant="circular" width={40} height={40} />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={<Skeleton variant="text" animation='wave' width={80} />} secondary={<Skeleton variant="text" width={120} />} />
-              </ListItem>
-              <Divider variant="inset" component="li" />
-              <ListItem secondaryAction={
-                <IconButton aria-label="open" onClick={() => { }}>
-                  <StarBorderRoundedIcon />
-                  <OpenInNewIcon />
-                </IconButton>
-              }>
-                <ListItemAvatar >
-                  <Avatar>
-                    <Skeleton variant="circular" width={40} height={40} />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={<Skeleton variant="text" animation='wave' width={80} />} secondary={<Skeleton variant="text" width={120} />} />
-              </ListItem>
-              <Divider variant="inset" component="li" />
-
-            </>
+          loading ? <Spinner /> : docs.length != 0 ?
+            docs.map((d) => (
+              <div key={d.id}>
+                {/* <img src={d.file} alt="" /> */}
+                
+                <ListItem secondaryAction={
+                  <>
+                  <IconButton aria-label="open" onClick={()=>handleDelete(d)}>
+                    <DeleteOutlineOutlinedIcon />
+                    
+                  </IconButton>
+                  <IconButton aria-label="open" onClick={() => { window.open(d.file) }}>
+                    
+                    <OpenInNewIcon />
+                  </IconButton>
+                  </>
+                }>
+                  <ListItemAvatar >
+                    <Avatar>
+                      {getIcon(d.type)}
+                    </Avatar>
+                  </ListItemAvatar>
+                  {/* <ListItemIcon>
+                  </ListItemIcon> */}
+                  <ListItemText primary={<Typography >{d.name}.{d.type}</Typography>} secondary={(new Date(d.date_time)).toLocaleString()} />
+                </ListItem>
+                <Divider variant="inset" component="li" />
+  
+              </div>
+            )) : "You haven't uploaded documents yet.Go to upload section."
         }
       </List>
       <Paper>
