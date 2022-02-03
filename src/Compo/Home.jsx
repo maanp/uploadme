@@ -77,8 +77,27 @@ export const Home = () => {
         </Tabs>
       </Box>
       <List >
-        
-        
+        {
+          
+           docs.length ? docs.map((d) => (
+            <div key={d.id}>
+              {/* <img src={d.file} alt="" /> */}
+              
+              <ListItem secondaryAction={
+                <IconButton aria-label="open" onClick={() => { window.open(d.file) }}>
+                  <OpenInNewIcon />
+                </IconButton>
+              }>
+                <ListItemAvatar >
+                  <Avatar>
+                    {getIcon(d.type)}
+                  </Avatar>
+                </ListItemAvatar>
+                {/* <ListItemIcon>
+                </ListItemIcon> */}
+                <ListItemText primary={<Typography >{d.name}.{d.type}</Typography>} secondary={(new Date(d.date_time)).toLocaleString()} />
+              </ListItem>
+              <Divider variant="inset" component="li" />
 
         {
           loading ? <Spinner /> : docs.length != 0 ?
