@@ -24,6 +24,13 @@
   color: white;
 }
 
+
+.list{
+  position: absolute !important;
+  top:67%;
+  left: 13.4%;
+}
+
 .App-link {
   color: #61dafb;
 }

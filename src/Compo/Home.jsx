@@ -13,7 +13,7 @@ import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import RefreshOutlinedIcon from '@mui/icons-material/RefreshOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { TabPanel } from '@mui/lab';
+
 
 
 export const Home = () => {
@@ -25,8 +25,8 @@ export const Home = () => {
 
 
 
-  let url = `https://uploadme.pythonanywhere.com`;
-  // let url = 'http://localhost:8000'
+  // let url = `https://uploadme.pythonanywhere.com`;
+  let url = 'http://localhost:8000'
 
   let fetchData = async () => {
     console.log('setting loading to true:===>', loading);
