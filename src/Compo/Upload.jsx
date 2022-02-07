@@ -24,7 +24,7 @@ export const Upload = () => {
 
 
   // let url = `https://uploadme.pythonanywhere.com`;
-  let url = 'http://localhost:8000' ;
+  let url = 'http://localhost:8000';
 
 
 
@@ -39,11 +39,11 @@ export const Upload = () => {
     // fd.append('type', (documentes.file.name).split('.')[1]);
     // console.log(fd.get('file'), fd.get('name'));
 
-    
+
 
     setShowstatus(true)
     // send the form data to the server with progress bar with XHR
-    let sendFile = (fd) =>{
+    let sendFile = (fd) => {
 
       let xhr = new XMLHttpRequest();
       xhr.open('POST', `${url}/api/upload/`);
@@ -54,7 +54,7 @@ export const Upload = () => {
           console.log('data sent');
           setDocs(JSON.parse(xhr.responseText));
           setShowalert(true);
-  
+
         }
       }
       xhr.upload.onprogress = (e) => {
@@ -62,8 +62,9 @@ export const Upload = () => {
         let percent = Math.round((e.loaded / e.total) * 100);
         // let percent = (e.loaded / e.total) * 100;
         console.log(progressEach.length);
-        if (progressEach.length >3 ) {
-          setProgressEach([]) }
+        if (progressEach.length > 3) {
+          setProgressEach([])
+        }
         setProgressEach((pre) => [...pre, percent]);
         console.log(progressEach);
         // if (e.lengthComputable) {
@@ -74,8 +75,8 @@ export const Upload = () => {
       xhr.send(fd);
     }
 
-    
-    
+
+
 
 
 
@@ -84,11 +85,11 @@ export const Upload = () => {
     documentes.forEach(element => {
       console.log('sending req')
       let fd = new FormData()
-        fd.append('file', element.file);
-        fd.append('name', element.name.split('.')[0]);
-        fd.append('type', element.file.name.split('.')[1]);
-        sendFile(fd) 
-      }); 
+      fd.append('file', element.file);
+      fd.append('name', element.name.split('.')[0]);
+      fd.append('type', element.file.name.split('.')[1]);
+      sendFile(fd)
+    });
 
 
 
@@ -181,7 +182,7 @@ export const Upload = () => {
     e.stopPropagation();
     // document.querySelector('#drop_zone').setAttribute('style', `border :2px solid ${blue[800]}`);
     document.querySelector('#drop_zone').removeAttribute('style', `border :2px solid ${blue[500]}`);
-    
+
     console.log(e.dataTransfer.files);
     let files = e.dataTransfer.files;
     for (let i = 0; i < files.length; i++) {
@@ -203,7 +204,6 @@ export const Upload = () => {
         <Typography variant='h4' gutterBottom>Upload Your Files</Typography>
         <div className="uploader" >
           <Container maxWidth='sm' sx={{ mb: 2 }}>
-
             <Stack spacing={2}>
               {/* <input type="file" name="file" id="file" onChange={(e) => setDocumentes({ ...documentes, [e.target.name]: e.target.files[0] })} /> <br /> */}
               <label htmlFor="contained-button-file">
@@ -234,24 +234,7 @@ export const Upload = () => {
                     documentes.map((d, i) => {
                       return (
                         <div key={i} >
-                          <List >
-                            <ListItem >
-                              <ListItemAvatar>
-                                <Avatar>
-                                  <FolderIcon />
-                                </Avatar>
-                              </ListItemAvatar>
-                              <ListItemText primary={
-                                <Typography component={'span'}>{d.name} - <Typography component={'span'} sx={{ color:`green` }}> {showloading ? 'Uploading...' : 'Uploaded'}</Typography></Typography>} />
-                            </ListItem>
-                          </List>
-                            <Container >
-                              <Grid container justifyContent="space-between" alignItems="center">
-                                <LinearProgress variant="determinate" value={progressEach[i]} sx={{ width: 80 + '%' }} />
-                                <Typography>{progressEach[i]}%</Typography>
-                              </Grid>
-                            </Container>
-                        
+                         
                         </div>
                       )
                     })
