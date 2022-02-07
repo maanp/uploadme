@@ -64,6 +64,7 @@ export const Home = () => {
   }
 
   let handleDelete = (e) => {
+    setAnchorEl(null);
     console.log(e.id)
     fetch(`${url}/api/upload/${e.id}/`, {
       method: 'DELETE'
@@ -115,6 +116,7 @@ export const Home = () => {
                       <MoreVertIcon />
                     </IconButton>
                     <Menu
+                      elevation={2}
                       id="basic-menu"
                       anchorEl={anchorEl}
                       open={open}

@@ -20,7 +20,7 @@ export const Upload = () => {
   const [showalert, setShowalert] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showstatus, setShowstatus] = useState(false);
-
+  const [progressEach, setProgressEach] = useState([]);
 
 
   // let url = `https://uploadme.pythonanywhere.com`;
@@ -32,7 +32,6 @@ export const Upload = () => {
     setShowloading(true)
     console.log(showloading);
     console.log('sending data');
-    let fd = new FormData()
     // console.log((documentes.file.name).split('.')[0]);
     // console.log(documentes);
     // fd.append('file', documentes.file);
@@ -40,41 +39,56 @@ export const Upload = () => {
     // fd.append('type', (documentes.file.name).split('.')[1]);
     // console.log(fd.get('file'), fd.get('name'));
 
-    //loop through the documentes array and add each file and file name to the form data
-    documentes.forEach(element => {
-      fd.append('file', element.file);
-      fd.append('name', element.name.split('.')[0]);
-      fd.append('type', element.file.name.split('.')[1]);
-    });
+    
 
     setShowstatus(true)
     // send the form data to the server with progress bar with XHR
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', `${url}/api/upload/`);
-    xhr.onload = () => {
-      if (xhr.status === 201) {
-        setShowloading(false)
-        console.log(showloading);
-        console.log('data sent');
-        setDocs(JSON.parse(xhr.responseText));
-        setShowalert(true);
+    let sendFile = (fd) =>{
 
+      let xhr = new XMLHttpRequest();
+      xhr.open('POST', `${url}/api/upload/`);
+      xhr.onload = () => {
+        if (xhr.status === 201) {
+          setShowloading(false)
+          console.log(showloading);
+          console.log('data sent');
+          setDocs(JSON.parse(xhr.responseText));
+          setShowalert(true);
+  
+        }
       }
+      xhr.upload.onprogress = (e) => {
+        // calculate the progress and round it to 2 decimal places
+        let percent = Math.round((e.loaded / e.total) * 100);
+        // let percent = (e.loaded / e.total) * 100;
+        console.log(progressEach.length);
+        if (progressEach.length >3 ) {
+          setProgressEach([]) }
+        setProgressEach((pre) => [...pre, percent]);
+        console.log(progressEach);
+        // if (e.lengthComputable) {
+        //   setProgress(e.loaded / e.total * 100);
+        //   console.log(progress);
+        // }
+      }
+      xhr.send(fd);
     }
-    xhr.upload.onprogress = (e) => {
-      // calculate the progress and round it to 2 decimal places
-      let percent = Math.round((e.loaded / e.total) * 100);
-      // let percent = (e.loaded / e.total) * 100;
-      setProgress(percent);
-      console.log(percent);
-      // if (e.lengthComputable) {
-      //   setProgress(e.loaded / e.total * 100);
-      //   console.log(progress);
-      // }
-    }
-    xhr.send(fd);
+
+    
+    
 
 
+
+
+    //loop through the documentes array and add each file and file name to the form data and set progresssbar for each file 
+    documentes.forEach(element => {
+      console.log('sending req')
+      let fd = new FormData()
+        fd.append('file', element.file);
+        fd.append('name', element.name.split('.')[0]);
+        fd.append('type', element.file.name.split('.')[1]);
+        sendFile(fd) 
+      }); 
 
 
 
@@ -96,10 +110,10 @@ export const Upload = () => {
 
 
     // loop through the form data and send it to the server
-    for (var pair of fd.entries()) {
-      console.log(pair[0] + ', ' + pair[1]);
-    }
-    console.log(fd.get('file'), fd.get('name'));
+    // for (var pair of fd.entries()) {
+    //   console.log(pair[0] + ', ' + pair[1]);
+    // }
+    // console.log(fd.get('file'), fd.get('name'));
 
     console.log(showloading);
     //  fetch(`${url}/api/upload/`,
@@ -173,12 +187,12 @@ export const Upload = () => {
     for (let i = 0; i < files.length; i++) {
       console.log(files[i]);
       setDocumentes((pre) => [...pre, { name: files[i].name, file: files[i] }]);
-      console.log(documentes);
+      // console.log(documentes);
 
 
     }
     // setDocumentes([...documentes  ,{ name: e.dataTransfer.files[0].name, file: e.dataTransfer.files[0] }]);
-    console.log(documentes);
+    // console.log(documentes);
   }
 
 
@@ -221,7 +235,6 @@ export const Upload = () => {
                       return (
                         <div key={i} >
                           <List >
-
                             <ListItem >
                               <ListItemAvatar>
                                 <Avatar>
@@ -232,16 +245,13 @@ export const Upload = () => {
                                 <Typography component={'span'}>{d.name} - <Typography component={'span'} sx={{ color:`green` }}> {showloading ? 'Uploading...' : 'Uploaded'}</Typography></Typography>} />
                             </ListItem>
                           </List>
-
-                          {
-                            showloading &&
                             <Container >
                               <Grid container justifyContent="space-between" alignItems="center">
-                                <LinearProgress variant="determinate" value={progress} sx={{ width: 80 + '%' }} />
-                                <Typography>{progress}%</Typography>
+                                <LinearProgress variant="determinate" value={progressEach[i]} sx={{ width: 80 + '%' }} />
+                                <Typography>{progressEach[i]}%</Typography>
                               </Grid>
                             </Container>
-                          }
+                        
                         </div>
                       )
                     })
