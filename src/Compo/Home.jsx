@@ -25,8 +25,8 @@ export const Home = () => {
 
 
 
-  // let url = `https://uploadme.pythonanywhere.com`;
-  let url = 'http://localhost:8000'
+  let url = `https://uploadme.pythonanywhere.com`;
+//   let url = 'http://localhost:8000'
 
   let fetchData = async () => {
     console.log('setting loading to true:====>', loading);
