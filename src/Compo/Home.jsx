@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Container from '@mui/material/Container';
-import { Paper, Typography, Box, Tabs, Tab, List, ListItem, ListItemIcon, ListItemText, IconButton, Avatar, ListItemAvatar, Stack, Menu, MenuItem, ListItemButton } from '@mui/material';
+import {  Typography, Box, Tabs, Tab, List, ListItem, ListItemIcon, ListItemText, IconButton, Avatar, ListItemAvatar, Stack, Menu, MenuItem } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import ImageIcon from '@mui/icons-material/Image';
 import ArticleIcon from '@mui/icons-material/Article';
 import Divider from '@mui/material/Divider';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import Skeleton from '@mui/material/Skeleton';
+// import Skeleton from '@mui/material/Skeleton';
 import { Spinner } from './Spinner';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import RefreshOutlinedIcon from '@mui/icons-material/RefreshOutlined';
@@ -29,7 +29,7 @@ export const Home = () => {
   let url = 'http://localhost:8000'
 
   let fetchData = async () => {
-    console.log('setting loading to true:===>', loading);
+    console.log('setting loading to true:====>', loading);
     setLoading(true)
     console.log(loading);
     await fetch(`${url}/api/upload/`).then((d) => d.json()).then((d) => setDocs(d))
@@ -42,24 +42,13 @@ export const Home = () => {
   };
   useEffect(() => {
     fetchData()
+    // eslint-disable-next-line
   }, []);
 
   let getIcon = (type) => {
-    // switch (type) {
-    //   case 'pdf':
-    //     return <PictureAsPdfIcon />
-    //   case 'img':
-    //     return <ImageIcon />
-    //   case  'svg':
-    //     return <ImageIcon />
-    //   case 'doc':
-    //     return <ArticleIcon />
-    //   default:
-    //     return <FolderIcon />
-    // }
-    if (type == 'pdf') return <PictureAsPdfIcon />
-    else if (type == 'img' || type == 'svg' || type == 'jpg' || type == 'jpeg' || type == 'png') return <ImageIcon />
-    else if (type == 'doc') return <ArticleIcon />
+    if (type === 'pdf') return <PictureAsPdfIcon />
+    else if (type === 'img' || type === 'svg' || type === 'jpg' || type === 'jpeg' || type === 'png') return <ImageIcon />
+    else if (type === 'doc') return <ArticleIcon />
     return <FolderIcon />
   }
 
@@ -99,7 +88,7 @@ export const Home = () => {
       <List >
 
         {
-          loading ? <Spinner /> : docs.length != 0 ?
+          loading ? <Spinner /> : docs.length !== 0 ?
             docs.map((d) => (
               <div key={d.id}>
                 {/* <img src={d.file} alt="" /> */}

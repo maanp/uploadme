@@ -3,10 +3,13 @@ import { Home } from './Compo/Home';
 import { Navbar } from './Compo/Navbar';
 import { Upload } from './Compo/Upload';
 import { BrowserRouter as Router,  Route , Routes  } from 'react-router-dom'
+import { FileState } from './context/FileState';
+
 
 function App() {
   return (
     <>
+    <FileState>
     <Router>
     <div className="App">
       <Navbar />
@@ -16,6 +19,7 @@ function App() {
       </Routes>
     </div>
     </Router>
+    </FileState>
     </>
   );
 }
