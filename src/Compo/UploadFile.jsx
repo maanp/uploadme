@@ -29,8 +29,8 @@ export const UploadFile = (props) => {
   const [showStatus, setShowStatus] = useState(false);
   const [isAborted, setIsAborted] = useState(false);
 
-  let url = "http://localhost:8000";
-
+//   let url = "http://localhost:8000";
+  let url = "https://uploadme.pythonanywhere.com";
   let handleSubmit = async () => {
     setShowloading(true);
     // send the form data to the server with progress bar with XHR
